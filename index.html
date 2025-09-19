@@ -1,579 +1,1056 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Your Shop in Every Pocket — Demo</title>
-  <style>
-    /* ====== Variables ====== */
-    :root{
-      --bg: #f7f9fc;
-      --card: #ffffff;
-      --text: #0f1724;
-      --muted: #6b7280;
-      --accent-blue: #0ea5e9;    /* bright blue */
-      --accent-orange: #ff7a18;  /* bright orange */
-      --success-green: #25D366;  /* whatsapp-like green */
-      --shadow: 0 6px 18px rgba(15,23,36,0.08);
-      --radius: 12px;
-      --glass: rgba(255,255,255,0.6);
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-    }
-
-    /* ====== Basic page ====== */
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      background: linear-gradient(180deg, #f8fbff 0%, var(--bg) 100%);
-      color:var(--text);
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-      line-height:1.4;
-      padding:28px;
-    }
-
-    .container{
-      max-width:1200px;
-      margin:0 auto;
-      padding:8px 16px;
-    }
-
-    /* ====== Header / Hero ====== */
-    header{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:16px;
-      margin-bottom:28px;
-    }
-
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:12px;
-      text-decoration:none;
-      color:inherit;
-    }
-    .logo{
-      width:52px;
-      height:52px;
-      border-radius:12px;
-      background:linear-gradient(135deg,var(--accent-blue), var(--accent-orange));
-      box-shadow: var(--shadow);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      color:white;
-      font-weight:700;
-      font-size:18px;
-    }
-
-    .cta{
-      display:flex;
-      gap:8px;
-      align-items:center;
-    }
-    .btn{
-      border:0;
-      padding:10px 14px;
-      border-radius:10px;
-      cursor:pointer;
-      font-weight:600;
-      box-shadow: var(--shadow);
-    }
-    .btn-ghost{ background:transparent; color:var(--muted); }
-    .btn-primary{ background:linear-gradient(90deg,var(--accent-blue),var(--accent-orange)); color:white; }
-
-    .hero{
-      display:grid;
-      grid-template-columns: 1fr 420px;
-      gap:24px;
-      align-items:center;
-      margin-bottom:32px;
-    }
-
-    .hero-card{
-      background: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.4));
-      padding:28px;
-      border-radius:18px;
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(6px);
-    }
-
-    .hero h1{
-      margin:0;
-      font-size:28px;
-      letter-spacing:-0.5px;
-      color:var(--text);
-    }
-    .hero p{ margin:12px 0 18px 0; color:var(--muted); font-size:15px; }
-    .hero .features{ display:flex; gap:12px; flex-wrap:wrap; margin-top:8px; }
-    .pill{
-      background:linear-gradient(90deg, rgba(14,165,233,0.12), rgba(255,122,24,0.08));
-      color:var(--text);
-      border-radius:999px;
-      padding:8px 12px;
-      font-weight:600;
-      font-size:13px;
-    }
-
-    /* hero preview product */
-    .hero-preview{
-      background:linear-gradient(180deg,#fff,#fff);
-      border-radius:16px;
-      padding:18px;
-      box-shadow: var(--shadow);
-      display:flex;
-      flex-direction:column;
-      gap:12px;
-      align-items:center;
-      text-align:center;
-    }
-    .hero-preview img{
-      width:100%;
-      height:220px;
-      object-fit:cover;
-      border-radius:10px;
-      box-shadow: 0 8px 30px rgba(14,165,233,0.08);
-    }
-    .price-chip{
-      display:inline-block;
-      padding:8px 12px;
-      border-radius:999px;
-      font-weight:700;
-      background:linear-gradient(90deg,var(--accent-blue), var(--accent-orange));
-      color:white;
-    }
-
-    /* ====== Catalog ====== */
-    .catalog{
-      margin-top:8px;
-    }
-
-    .grid{
-      display:grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap:18px;
-    }
-
-    .card{
-      background:var(--card);
-      border-radius:12px;
-      padding:12px;
-      box-shadow: var(--shadow);
-      transition:transform .18s ease, box-shadow .18s ease;
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-    }
-    .card:hover{ transform:translateY(-6px); box-shadow: 0 18px 40px rgba(15,23,36,0.12); }
-
-    .card img{
-      width:100%;
-      height:160px;
-      object-fit:cover;
-      border-radius:10px;
-    }
-    .card h3{ margin:0; font-size:16px; }
-    .card p{ margin:0; color:var(--muted); font-size:14px; }
-    .card .meta{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      margin-top:6px;
-    }
-    .price{
-      font-weight:800;
-      font-size:16px;
-      color:var(--text);
-    }
-    .view-btn{
-      background:transparent;
-      border:1px solid rgba(15,23,36,0.06);
-      padding:8px 10px;
-      border-radius:10px;
-      cursor:pointer;
-      font-weight:700;
-    }
-
-    /* ====== Modal ====== */
-    .modal-backdrop{
-      position:fixed;
-      inset:0;
-      display:none;
-      align-items:center;
-      justify-content:center;
-      z-index:1200;
-      background:linear-gradient(180deg, rgba(3,7,18,0.45), rgba(3,7,18,0.45));
-      padding:20px;
-    }
-    .modal{
-      width:100%;
-      max-width:920px;
-      background:var(--card);
-      border-radius:16px;
-      padding:18px;
-      display:grid;
-      grid-template-columns: 1fr 420px;
-      gap:18px;
-      box-shadow: 0 40px 80px rgba(3,7,18,0.3);
-      animation:pop .14s ease;
-    }
-    @keyframes pop{ from{transform:translateY(6px) scale(.995); opacity:0} to{transform:none; opacity:1} }
-
-    .modal .modal-image{
-      width:100%;
-      height:440px;
-      object-fit:cover;
-      border-radius:12px;
-      box-shadow: var(--shadow);
-    }
-    .modal .modal-content{
-      padding:6px 2px;
-      display:flex;
-      flex-direction:column;
-      gap:12px;
-    }
-    .modal .modal-content h2{ margin:0; }
-    .modal .modal-content .desc{ color:var(--muted); font-size:15px; flex:1; }
-    .modal .modal-content .price-large{ font-size:26px; font-weight:900; margin-top:6px; }
-
-    .modal .actions{
-      display:flex;
-      gap:10px;
-      align-items:center;
-      margin-top:10px;
-    }
-
-    .whatsapp-btn{
-      display:inline-flex;
-      align-items:center;
-      gap:10px;
-      padding:12px 14px;
-      border-radius:12px;
-      font-weight:800;
-      color:white;
-      background:linear-gradient(90deg,var(--success-green), #16b84a);
-      border:0;
-      cursor:pointer;
-      box-shadow: 0 10px 30px rgba(37,211,102,0.18);
-      text-decoration:none;
-    }
-    .close-btn{
-      background:transparent;
-      border:0;
-      color:var(--muted);
-      font-weight:700;
-      cursor:pointer;
-      padding:8px 10px;
-      border-radius:10px;
-    }
-
-    /* ====== Footer ====== */
-    footer{
-      margin-top:30px;
-      text-align:center;
-      color:var(--muted);
-      font-size:14px;
-    }
-
-    /* ====== Responsive ====== */
-    @media (max-width:1000px){
-      .hero{ grid-template-columns: 1fr; }
-      .modal{ grid-template-columns: 1fr; max-width:700px; }
-      .grid{ grid-template-columns: repeat(2,1fr); }
-    }
-    @media (max-width:560px){
-      body{ padding:18px; }
-      .grid{ grid-template-columns: repeat(1,1fr); }
-      .card img{ height:200px; }
-      .modal .modal-image{ height:320px; }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechBazaar - Your Tech Shop in Every Pocket</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2563eb;
+        }
+        
+        .logo span {
+            color: #f97316;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 30px;
+        }
+        
+        nav ul li a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        nav ul li a:hover {
+            color: #2563eb;
+        }
+        
+        .cart-icon {
+            position: relative;
+        }
+        
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: #f97316;
+            color: white;
+            font-size: 12px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+            border-radius: 0 0 20px 20px;
+            margin-bottom: 60px;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            font-weight: 800;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto 30px;
+            opacity: 0.9;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: #f97316;
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            background-color: #ea580c;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Categories */
+        .categories {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 30px 0;
+        }
+        
+        .category-btn {
+            padding: 10px 20px;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .category-btn:hover, .category-btn.active {
+            background: #2563eb;
+            color: white;
+            border-color: #2563eb;
+        }
+        
+        /* Products Section */
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 2.2rem;
+            color: #1e293b;
+        }
+        
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+        
+        .product-card {
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+        }
+        
+        .discount-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #ef4444;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            z-index: 2;
+        }
+        
+        .product-image {
+            height: 200px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+        
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .product-card:hover .product-image img {
+            transform: scale(1.05);
+        }
+        
+        .product-info {
+            padding: 20px;
+        }
+        
+        .product-name {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: #1e293b;
+        }
+        
+        .product-description {
+            color: #64748b;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .product-price {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .current-price {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #2563eb;
+        }
+        
+        .original-price {
+            font-size: 1rem;
+            color: #94a3b8;
+            text-decoration: line-through;
+        }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .modal-content {
+            background-color: white;
+            border-radius: 12px;
+            max-width: 900px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            animation: modalFade 0.3s;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        @keyframes modalFade {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .close-modal {
+            font-size: 24px;
+            cursor: pointer;
+            color: #64748b;
+            transition: color 0.3s;
+        }
+        
+        .close-modal:hover {
+            color: #333;
+        }
+        
+        .modal-body {
+            display: flex;
+            flex-direction: column;
+            padding: 0;
+        }
+        
+        @media (min-width: 768px) {
+            .modal-body {
+                flex-direction: row;
+            }
+        }
+        
+        .modal-image {
+            flex: 1;
+            background-color: #e5e7eb;
+            min-height: 300px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .modal-info {
+            flex: 1;
+            padding: 30px;
+        }
+        
+        .modal-product-name {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: #1e293b;
+        }
+        
+        .modal-product-price {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .modal-current-price {
+            font-size: 1.5rem;
+            color: #2563eb;
+            font-weight: 700;
+        }
+        
+        .modal-original-price {
+            font-size: 1.2rem;
+            color: #94a3b8;
+            text-decoration: line-through;
+        }
+        
+        .modal-product-description {
+            color: #64748b;
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+        
+        .modal-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        @media (min-width: 480px) {
+            .modal-actions {
+                flex-direction: row;
+            }
+        }
+        
+        .whatsapp-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #25d366;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: background-color 0.3s;
+            flex: 1;
+        }
+        
+        .whatsapp-btn i {
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .whatsapp-btn:hover {
+            background-color: #128c7e;
+        }
+        
+        .visit-shop-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #2563eb;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: background-color 0.3s;
+            flex: 1;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .visit-shop-btn i {
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .visit-shop-btn:hover {
+            background-color: #1e40af;
+        }
+        
+        /* Map Modal */
+        .map-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1001;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .map-modal-content {
+            background-color: white;
+            border-radius: 12px;
+            max-width: 800px;
+            width: 100%;
+            padding: 20px;
+            position: relative;
+        }
+        
+        .map-container {
+            height: 400px;
+            width: 100%;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-top: 15px;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: #1e293b;
+            color: white;
+            padding: 50px 0 20px;
+            margin-top: 60px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-column h3 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: #f8fafc;
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-column ul li a {
+            color: #cbd5e1;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-column ul li a:hover {
+            color: white;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #334155;
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            nav ul {
+                margin-top: 20px;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            
+            nav ul li {
+                margin: 5px 10px;
+            }
+            
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .modal-body {
+                flex-direction: column;
+            }
+            
+            .modal-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
+    <!-- Header -->
     <header>
-      <a class="brand" href="#" aria-label="Varsity Shop">
-        <div class="logo">VB</div>
-        <div>
-          <div style="font-weight:800">Varsity Shop</div>
-          <div style="font-size:12px;color:var(--muted)">Demo e-commerce template</div>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">Tech<span>Bazaar</span></div>
+                <nav>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Products</a></li>
+                        <li><a href="#">Categories</a></li>
+                        <li><a href="#">About</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#" class="cart-icon"><i class="fas fa-shopping-cart"></i> <span class="cart-count">0</span></a></li>
+                    </ul>
+                </nav>
+            </div>
         </div>
-      </a>
-
-      <div class="cta">
-        <button class="btn btn-ghost" onclick="location.href='#catalog'">Browse</button>
-        <button class="btn btn-primary" onclick="alert('Replace with your own CTA — e.g., contact form')">Start Selling</button>
-      </div>
     </header>
 
-    <main>
-      <section class="hero">
-        <div class="hero-card">
-          <h1>Your Shop in Every Pocket</h1>
-          <p>Discover all our products and services in one place. Built with clean visuals, fast interactions, and a mobile-first layout for sellers and buyers across Africa.</p>
-
-          <div class="features">
-            <span class="pill">Mobile-first</span>
-            <span class="pill">Fast checkout (demo)</span>
-            <span class="pill">WhatsApp ordering</span>
-            <span class="pill">Local-first</span>
-          </div>
-
-          <div style="margin-top:18px; display:flex; gap:10px;">
-            <button class="btn btn-primary" onclick="document.getElementById('catalog').scrollIntoView({behavior:'smooth'})">Shop Now</button>
-            <button class="btn btn-ghost" onclick="alert('Use this for onboarding sellers')">Sell with us</button>
-          </div>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Your Tech Shop in Every Pocket</h1>
+            <p>Discover all our tech products and gadgets in one place</p>
+            <a href="#products" class="btn">Explore Products</a>
         </div>
+    </section>
 
-        <div class="hero-preview">
-          <img src="https://picsum.photos/seed/hero/800/600" alt="Featured product preview" />
-          <div style="display:flex;justify-content:space-between; width:100%; align-items:center;">
-            <div>
-              <div style="font-weight:800">Featured: Solar Power Bank</div>
-              <div style="font-size:13px;color:var(--muted)">Reliable, portable power — perfect for students</div>
-            </div>
-            <div class="price-chip">$29</div>
-          </div>
+    <!-- Categories -->
+    <div class="container">
+        <div class="categories">
+            <button class="category-btn active" data-category="all">All Products</button>
+            <button class="category-btn" data-category="smartphones">Smartphones</button>
+            <button class="category-btn" data-category="laptops">Laptops</button>
+            <button class="category-btn" data-category="audio">Audio</button>
+            <button class="category-btn" data-category="wearables">Wearables</button>
+            <button class="category-btn" data-category="accessories">Accessories</button>
         </div>
-      </section>
-
-      <section id="catalog" class="catalog" aria-labelledby="catalog-heading">
-        <h2 id="catalog-heading" style="margin:8px 0 18px 0">Product catalogue</h2>
-
-        <div class="grid" id="productGrid" role="list">
-          <!-- Cards inserted by HTML for demo -->
-          <div class="card" role="listitem" data-product='{"name":"Solar Power Bank","price":"$29","desc":"A compact solar power bank with 10,000mAh capacity — charges phones multiple times and has a built-in torch.","img":"https://picsum.photos/seed/p1/800/600"}'>
-            <img src="https://picsum.photos/seed/p1/600/400" alt="Solar Power Bank" />
-            <h3>Solar Power Bank</h3>
-            <p>Portable power for long study sessions and field trips.</p>
-            <div class="meta">
-              <div class="price">$29</div>
-              <button class="view-btn" onclick="openProductFromElement(this)">View</button>
-            </div>
-          </div>
-
-          <div class="card" role="listitem" data-product='{"name":"Campus Hoodie","price":"$22","desc":"Soft cotton hoodie with Varsity branding — stay warm and look sharp on campus.","img":"https://picsum.photos/seed/p2/800/600"}'>
-            <img src="https://picsum.photos/seed/p2/600/400" alt="Campus Hoodie" />
-            <h3>Campus Hoodie</h3>
-            <p>Comfortable hoodie for everyday wear.</p>
-            <div class="meta">
-              <div class="price">$22</div>
-              <button class="view-btn" onclick="openProductFromElement(this)">View</button>
-            </div>
-          </div>
-
-          <div class="card" role="listitem" data-product='{"name":"Noise-cancelling Earbuds","price":"$45","desc":"Small, in-ear earbuds with noise cancellation — ideal for studying in noisy environments.","img":"https://picsum.photos/seed/p3/800/600"}'>
-            <img src="https://picsum.photos/seed/p3/600/400" alt="Earbuds" />
-            <h3>Noise-cancelling Earbuds</h3>
-            <p>Focus better with high-quality sound and passive isolation.</p>
-            <div class="meta">
-              <div class="price">$45</div>
-              <button class="view-btn" onclick="openProductFromElement(this)">View</button>
-            </div>
-          </div>
-
-          <div class="card" role="listitem" data-product='{"name":"Refillable Notebook","price":"$7","desc":"Durable A5 notebook with refillable pages — perfect for notes and sketches.","img":"https://picsum.photos/seed/p4/800/600"}'>
-            <img src="https://picsum.photos/seed/p4/600/400" alt="Notebook" />
-            <h3>Refillable Notebook</h3>
-            <p>Sustainable, refillable design for continued use.</p>
-            <div class="meta">
-              <div class="price">$7</div>
-              <button class="view-btn" onclick="openProductFromElement(this)">View</button>
-            </div>
-          </div>
-
-          <div class="card" role="listitem" data-product='{"name":"Campus Backpack","price":"$38","desc":"Water-resistant backpack with laptop compartment and organizer pockets.","img":"https://picsum.photos/seed/p5/800/600"}'>
-            <img src="https://picsum.photos/seed/p5/600/400" alt="Backpack" />
-            <h3>Campus Backpack</h3>
-            <p>Carry books and laptop comfortably across campus.</p>
-            <div class="meta">
-              <div class="price">$38</div>
-              <button class="view-btn" onclick="openProductFromElement(this)">View</button>
-            </div>
-          </div>
-
-          <div class="card" role="listitem" data-product='{"name":"LED Desk Lamp","price":"$18","desc":"Adjustable brightness LED lamp — ideal for late-night study sessions.","img":"https://picsum.photos/seed/p6/800/600"}'>
-            <img src="https://picsum.photos/seed/p6/600/400" alt="Desk Lamp" />
-            <h3>LED Desk Lamp</h3>
-            <p>Bright, energy-efficient lamp with adjustable angles.</p>
-            <div class="meta">
-              <div class="price">$18</div>
-              <button class="view-btn" onclick="openProductFromElement(this)">View</button>
-            </div>
-          </div>
-
-          <div class="card" role="listitem" data-product='{"name":"Reusable Coffee Cup","price":"$9","desc":"Insulated reusable cup to keep your drinks hot or cold while you study.","img":"https://picsum.photos/seed/p7/800/600"}'>
-            <img src="https://picsum.photos/seed/p7/600/400" alt="Coffee Cup" />
-            <h3>Reusable Coffee Cup</h3>
-            <p>Eco-friendly cup for daily caffeine runs.</p>
-            <div class="meta">
-              <div class="price">$9</div>
-              <button class="view-btn" onclick="openProductFromElement(this)">View</button>
-            </div>
-          </div>
-
-          <div class="card" role="listitem" data-product='{"name":"USB Flash Drive 128GB","price":"$15","desc":"High-speed USB flash drive for backups and file transfers.","img":"https://picsum.photos/seed/p8/800/600"}'>
-            <img src="https://picsum.photos/seed/p8/600/400" alt="USB Flash Drive" />
-            <h3>USB Flash Drive 128GB</h3>
-            <p>Reliable storage for presentations and coursework.</p>
-            <div class="meta">
-              <div class="price">$15</div>
-              <button class="view-btn" onclick="openProductFromElement(this)">View</button>
-            </div>
-          </div>
-
-        </div>
-      </section>
-    </main>
-
-    <!-- Modal structure -->
-    <div id="modalBackdrop" class="modal-backdrop" aria-hidden="true" role="dialog" aria-modal="true">
-      <div class="modal" role="document" aria-labelledby="modalTitle">
-        <img id="modalImage" class="modal-image" src="" alt="" />
-        <div class="modal-content">
-          <div style="display:flex;justify-content:space-between;gap:10px;align-items:start;">
-            <div>
-              <h2 id="modalTitle">Product name</h2>
-              <div id="modalSubtitle" style="color:var(--muted);font-size:13px;margin-top:6px;"></div>
-            </div>
-            <button class="close-btn" id="modalClose" aria-label="Close product details">✕</button>
-          </div>
-
-          <div class="desc" id="modalDesc">
-            Full product description goes here.
-          </div>
-
-          <div class="price-large" id="modalPrice">$0</div>
-
-          <div class="actions">
-            <a href="#" id="whatsappLink" class="whatsapp-btn" target="_blank" rel="noopener noreferrer">
-              <!-- WhatsApp icon (simple svg) -->
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
-                <path d="M20.5 3.5C18 1 14.9 0 11.5 0 5.1 0 .1 5 .1 11.4c0 2 .5 3.9 1.5 5.6L0 24l6.3-1.6c1.6.9 3.3 1.4 5.2 1.4 6.4 0 11.6-5 11.6-11.6 0-3.4-1-6.5-3.1-8.8z" fill="white" opacity=".06"/>
-                <path d="M20 4.9c-.8-.8-1.7-1.5-2.7-2 .9 1.1 1.5 2.5 1.5 4 0 3.4-2.7 6.1-6.1 6.1-.7 0-1.4-.1-2-.4L8 16l1.6-2.7c-.3-.7-.5-1.4-.5-2.2 0-3.4 2.7-6.1 6.1-6.1 1.4 0 2.8.5 3.9 1.4.8.8 1.4 1.6 1.9 2.6z" fill="white"/>
-              </svg>
-              Order on WhatsApp
-            </a>
-
-            <button class="close-btn" id="modalClose2">Close</button>
-          </div>
-
-          <div style="color:var(--muted); font-size:13px; margin-top:auto;">
-            Tip: WhatsApp opens in a new tab. Replace this flow with a checkout when you add a backend.
-          </div>
-        </div>
-      </div>
     </div>
 
+    <!-- Products Section -->
+    <section id="products">
+        <div class="container">
+            <h2 class="section-title">Featured Products</h2>
+            <div class="products-grid">
+                <!-- Smartphones -->
+                <div class="product-card" data-product-id="1" data-category="smartphones">
+                    <div class="discount-badge">15% OFF</div>
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1592899677977-9c10ca588bbd?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=80" alt="iPhone 13 Pro">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">iPhone 13 Pro</h3>
+                        <p class="product-description">Latest iPhone with Pro camera system, A15 Bionic chip, and Super Retina XDR display.</p>
+                        <div class="product-price">
+                            <span class="current-price">$999.99</span>
+                            <span class="original-price">$1,199.99</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card" data-product-id="2" data-category="smartphones">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=80" alt="Samsung Galaxy S22">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">Samsung Galaxy S22</h3>
+                        <p class="product-description">Powerful Android phone with Dynamic AMOLED display and advanced camera system.</p>
+                        <div class="product-price">
+                            <span class="current-price">$849.99</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Laptops -->
+                <div class="product-card" data-product-id="3" data-category="laptops">
+                    <div class="discount-badge">10% OFF</div>
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1541807084-5c52b6b3adef?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=80" alt="MacBook Pro 16">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">MacBook Pro 16"</h3>
+                        <p class="product-description">Powerful laptop with M2 Pro chip, Retina display, and up to 32GB unified memory.</p>
+                        <div class="product-price">
+                            <span class="current-price">$2,299.99</span>
+                            <span class="original-price">$2,499.99</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card" data-product-id="4" data-category="laptops">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=80" alt="Dell XPS 13">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">Dell XPS 13</h3>
+                        <p class="product-description">Ultra-thin laptop with InfinityEdge display, Intel Core i7, and 16GB RAM.</p>
+                        <div class="product-price">
+                            <span class="current-price">$1,199.99</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Audio -->
+                <div class="product-card" data-product-id="5" data-category="audio">
+                    <div class="discount-badge">20% OFF</div>
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=80" alt="Sony WH-1000XM5">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">Sony WH-1000XM5</h3>
+                        <p class="product-description">Industry-leading noise canceling headphones with 30-hour battery life.</p>
+                        <div class="product-price">
+                            <span class="current-price">$328.99</span>
+                            <span class="original-price">$399.99</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card" data-product-id="6" data-category="audio">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1572536147248-ac59a8abfa4b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=80" alt="AirPods Pro">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">AirPods Pro</h3>
+                        <p class="product-description">Active Noise Cancellation with transparency mode and spatial audio.</p>
+                        <div class="product-price">
+                            <span class="current-price">$249.99</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Wearables -->
+                <div class="product-card" data-product-id="7" data-category="wearables">
+                    <div class="discount-badge">12% OFF</div>
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1585123334904-845d60e97b29?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=80" alt="Apple Watch Series 8">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">Apple Watch Series 8</h3>
+                        <p class="product-description">Advanced health features including temperature sensing and crash detection.</p>
+                        <div class="product-price">
+                            <span class="current-price">$399.99</span>
+                            <span class="original-price">$449.99</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card" data-product-id="8" data-category="wearables">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1544117519-31a4b719223d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=80" alt="Fitbit Charge 5">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">Fitbit Charge 5</h3>
+                        <p class="product-description">Advanced fitness tracker with stress management tools and ECG app.</p>
+                        <div class="product-price">
+                            <span class="current-price">$149.99</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Accessories -->
+                <div class="product-card" data-product-id="9" data-category="accessories">
+                    <div class="discount-badge">25% OFF</div>
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1609081219090-a6d81d3085bf?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=80" alt="Anker Power Bank">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">Anker Power Bank</h3>
+                        <p class="product-description">20,000mAh portable charger with Power Delivery technology.</p>
+                        <div class="product-price">
+                            <span class="current-price">$45.99</span>
+                            <span class="original-price">$59.99</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card" data-product-id="10" data-category="accessories">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=80" alt="Logitech MX Master 3">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">Logitech MX Master 3</h3>
+                        <p class="product-description">Wireless mouse designed for creative professionals and productivity.</p>
+                        <div class="product-price">
+                            <span class="current-price">$99.99</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Product Modal -->
+    <div class="modal" id="productModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalProductName"></h2>
+                <span class="close-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="modal-image">
+                    <img id="modalProductImage" src="" alt="Product Image">
+                </div>
+                <div class="modal-info">
+                    <h3 id="modalProductName2"></h3>
+                    <div class="modal-product-price">
+                        <span class="modal-current-price" id="modalCurrentPrice"></span>
+                        <span class="modal-original-price" id="modalOriginalPrice"></span>
+                    </div>
+                    <p class="modal-product-description" id="modalProductDescription"></p>
+                    <div class="modal-actions">
+                        <a href="#" class="whatsapp-btn" id="whatsappBtn" target="_blank">
+                            <i class="fab fa-whatsapp"></i> WhatsApp
+                        </a>
+                        <button class="visit-shop-btn" id="visitShopBtn">
+                            <i class="fas fa-map-marker-alt"></i> Visit Shop
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Map Modal -->
+    <div class="map-modal" id="mapModal">
+        <div class="map-modal-content">
+            <div class="modal-header">
+                <h2>Our Store Location</h2>
+                <span class="close-modal" id="closeMapModal">&times;</span>
+            </div>
+            <p>Visit us at our flagship store in downtown Tech Central</p>
+            <div class="map-container" id="map"></div>
+        </div>
+    </div>
+
+    <!-- Footer -->
     <footer>
-      © <span id="year"></span> Varsity Shop — Demo. Built for student sellers & entrepreneurs.
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>TechBazaar</h3>
+                    <p>Your one-stop shop for all your tech needs. Quality products at affordable prices.</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Products</a></li>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contact Info</h3>
+                    <ul>
+                        <li><i class="fas fa-map-marker-alt"></i> 123 Tech Central, City</li>
+                        <li><i class="fas fa-phone"></i> +1 (555) 123-4567</li>
+                        <li><i class="fas fa-envelope"></i> info@techbazaar.com</li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Follow Us</h3>
+                    <ul>
+                        <li><a href="#"><i class="fab fa-facebook"></i> Facebook</a></li>
+                        <li><a href="#"><i class="fab fa-instagram"></i> Instagram</a></li>
+                        <li><a href="#"><i class="fab fa-twitter"></i> Twitter</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 TechBazaar. All rights reserved.</p>
+            </div>
+        </div>
     </footer>
-  </div>
 
-  <script>
-    // ====== Utilities ======
-    const modalBackdrop = document.getElementById('modalBackdrop');
-    const modalImage = document.getElementById('modalImage');
-    const modalTitle = document.getElementById('modalTitle');
-    const modalDesc = document.getElementById('modalDesc');
-    const modalPrice = document.getElementById('modalPrice');
-    const whatsappLink = document.getElementById('whatsappLink');
-    const modalClose = document.getElementById('modalClose');
-    const modalClose2 = document.getElementById('modalClose2');
-    const modalSubtitle = document.getElementById('modalSubtitle');
-
-    // Fill year
-    document.getElementById('year').textContent = new Date().getFullYear();
-
-    // Open the modal using the product data attached to the card
-    function openProductFromElement(button){
-      // find closest card element and its data-product
-      const card = button.closest('.card');
-      if(!card) return;
-      const json = card.getAttribute('data-product');
-      let product = {};
-      try { product = JSON.parse(json); } catch(e){ console.warn('Invalid product JSON', e); return; }
-      openProduct(product);
-    }
-
-    // Core open function
-    function openProduct(product){
-      modalImage.src = product.img || 'https://picsum.photos/seed/default/800/600';
-      modalImage.alt = product.name || 'Product';
-      modalTitle.textContent = product.name || 'Product name';
-      modalDesc.textContent = product.desc || '';
-      modalPrice.textContent = product.price || '';
-      modalSubtitle.textContent = product.desc?.slice(0,80) || '';
-      // Build WhatsApp URL: use wa.me/?text=... which works without a phone number (opens WhatsApp Web)
-      const message = `Hello, I saw your product "${product.name}" on your website and I want to buy it.`;
-      const waHref = 'https://wa.me/?text=' + encodeURIComponent(message);
-      whatsappLink.href = waHref;
-
-      // Show modal
-      modalBackdrop.style.display = 'flex';
-      modalBackdrop.setAttribute('aria-hidden', 'false');
-
-      // Accessibility: trap focus (basic)
-      previousActive = document.activeElement;
-      setTimeout(()=> whatsappLink.focus(), 80);
-    }
-
-    // Close modal
-    function closeModal(){
-      modalBackdrop.style.display = 'none';
-      modalBackdrop.setAttribute('aria-hidden', 'true');
-      // restore focus
-      if(previousActive) previousActive.focus();
-    }
-
-    // Close handlers
-    modalClose.addEventListener('click', closeModal);
-    modalClose2.addEventListener('click', closeModal);
-    modalBackdrop.addEventListener('click', (e)=>{
-      if(e.target === modalBackdrop) closeModal(); // click outside to close
-    });
-
-    // Keyboard support
-    window.addEventListener('keydown', (e)=>{
-      if(e.key === 'Escape' && modalBackdrop.style.display === 'flex') closeModal();
-    });
-
-    // Optional: open modal from URL hash (#product=Solar%20Power%20Bank)
-    (function handleHashOpen(){
-      const params = new URLSearchParams(location.hash.replace('#',''));
-      // expected format: #product=Product%20Name
-      if(location.hash && location.hash.startsWith('#product=')){
-        const requested = decodeURIComponent(location.hash.split('=')[1] || '');
-        // find product in DOM
-        const cards = document.querySelectorAll('.card');
-        for(const c of cards){
-          try {
-            const p = JSON.parse(c.dataset.product);
-            if(p.name && p.name.toLowerCase() === requested.toLowerCase()){
-              openProduct(p);
-              break;
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // Product data
+        const products = {
+            1: {
+                name: "iPhone 13 Pro",
+                image: "https://images.unsplash.com/photo-1592899677977-9c10ca588bbd?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=80",
+                currentPrice: "$999.99",
+                originalPrice: "$1,199.99",
+                description: "The iPhone 13 Pro features a stunning Super Retina XDR display with ProMotion technology, offering adaptive refresh rates up to 120Hz. The powerful A15 Bionic chip enables exceptional performance for demanding tasks and gaming. The Pro camera system includes new Ultra Wide, Wide, and Telephoto cameras with Night mode, Deep Fusion, and Apple ProRAW. Cinematic mode allows for professional-looking videos with shallow depth of field and automatic focus changes. With 5G capability and improved battery life, it's the ultimate iPhone for power users."
+            },
+            2: {
+                name: "Samsung Galaxy S22",
+                image: "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=80",
+                currentPrice: "$849.99",
+                originalPrice: null,
+                description: "The Samsung Galaxy S22 boasts a brilliant Dynamic AMOLED 2X display with Vision Booster technology for vibrant colors in any lighting condition. Powered by the latest Snapdragon 8 Gen 1 processor, it delivers flagship performance for multitasking and gaming. The advanced camera system features Nightography capabilities for stunning low-light photos and videos. With an aluminum frame and Gorilla Glass Victus+ protection, it's both elegant and durable. The phone includes an intelligent battery that optimizes usage based on your habits."
+            },
+            3: {
+                name: "MacBook Pro 16\"",
+                image: "https://images.unsplash.com/photo-1541807084-5c52b6b3adef?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=80",
+                currentPrice: "$2,299.99",
+                originalPrice: "$2,499.99",
+                description: "The MacBook Pro 16\" is a powerhouse for professionals, featuring the revolutionary M2 Pro chip with a 12-core CPU and 19-core GPU. The stunning Liquid Retina XDR display offers extreme dynamic range and incredible detail. With up to 32GB of unified memory and up to 8TB of SSD storage, it handles the most demanding workflows seamlessly. The advanced thermal system ensures sustained performance during intensive tasks. The Magic Keyboard features a comfortable typing experience, and the six-speaker sound system provides immersive audio. With up to 21 hours of battery life, it's perfect for all-day productivity."
+            },
+            4: {
+                name: "Dell XPS 13",
+                image: "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=80",
+                currentPrice: "$1,199.99",
+                originalPrice: null,
+                description: "The Dell XPS 13 is the ultimate ultraportable laptop, featuring an InfinityEdge display with minimal borders for maximum screen space. Powered by Intel's latest Core i7 processor and 16GB of RAM, it delivers exceptional performance for work and entertainment. The premium aluminum and carbon fiber construction ensures durability without adding weight. With PCIe SSD storage, apps load quickly and files transfer in seconds. The keyboard offers a comfortable typing experience, and the large precision touchpad supports multi-touch gestures. With up to 14 hours of battery life, it's perfect for on-the-go professionals."
+            },
+            5: {
+                name: "Sony WH-1000XM5",
+                image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=80",
+                currentPrice: "$328.99",
+                originalPrice: "$399.99",
+                description: "The Sony WH-1000XM5 headphones feature industry-leading noise cancellation with Dual Noise Sensor technology that captures ambient sound at unprecedented levels. Newly developed 30mm drivers deliver exceptional sound quality with deep bass and clear highs. The Auto NC Optimizer automatically adjusts noise cancellation based on wearing conditions and atmospheric pressure. With up to 30 hours of battery life and quick charging (3 minutes for 3 hours of playback), you'll never run out of power. The comfortable, lightweight design with soft fit leather makes them perfect for extended listening sessions. Multipoint connection allows you to connect to two devices simultaneously."
+            },
+            6: {
+                name: "AirPods Pro",
+                image: "https://images.unsplash.com/photo-1572536147248-ac59a8abfa4b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=80",
+                currentPrice: "$249.99",
+                originalPrice: null,
+                description: "AirPods Pro feature Active Noise Cancellation that continuously adapts to your environment and the geometry of your ear. Transparency mode lets you hear and connect with the world around you. The customizable fit comes with three sizes of soft, flexible silicone tips. The force sensor on the stem makes it easy to control music and calls. Spatial audio with dynamic head tracking places sound all around you for an immersive experience. The MagSafe charging case provides more than 24 hours of battery life and works with MagSafe charger and Qi-certified chargers. Sweat and water resistant for active lifestyles."
+            },
+            7: {
+                name: "Apple Watch Series 8",
+                image: "https://images.unsplash.com/photo-1585123334904-845d60e97b29?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=80",
+                currentPrice: "$399.99",
+                originalPrice: "$449.99",
+                description: "Apple Watch Series 8 introduces innovative health features including a temperature sensor that provides retrospective ovulation estimates and cycle insights. Crash Detection can detect severe car crashes and automatically call emergency services. The Always-On Retina display is 30% larger than Series 7, making it easier to read at a glance. Advanced fitness features track your workouts, calories burned, and activity trends. The watchOS 9 brings new watch faces, enhanced medications app, and improved sleep tracking. With up to 18 hours of battery life and fast charging, it's perfect for all-day wear and sleep tracking. Water resistant up to 50 meters for swimming and water activities."
+            },
+            8: {
+                name: "Fitbit Charge 5",
+                image: "https://images.unsplash.com/photo-1544117519-31a4b719223d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=80",
+                currentPrice: "$149.99",
+                originalPrice: null,
+                description: "The Fitbit Charge 5 is the most advanced health and fitness tracker in the Charge series, featuring an stress management score based on your body's responses. The ECG app can assess your heart rhythm for signs of atrial fibrillation. The always-on color touchscreen is twice as bright as Charge 4 indoors and outdoors. Track your sleep stages and get a Sleep Score to understand your sleep quality. With 20+ exercise modes and built-in GPS, you can track your workouts without your phone. The device provides up to 7 days of battery life on a single charge. The Daily Readiness Score helps you decide when to workout or recover based on your activity, sleep, and heart rate variability."
+            },
+            9: {
+                name: "Anker Power Bank",
+                image: "https://images.unsplash.com/photo-1609081219090-a6d81d3085bf?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=80",
+                currentPrice: "$45.99",
+                originalPrice: "$59.99",
+                description: "The Anker Power Bank is a high-capacity portable charger with 20,000mAh of power, enough to charge an iPhone 13 up to 4 times. Featuring Power Delivery technology, it can charge compatible devices at maximum speed. The USB-C port supports both input and output, while the two USB-A ports provide additional charging options. The digital display shows the remaining battery percentage so you know exactly how much power is left. The sleek design is compact and portable, making it perfect for travel. Built with multi-protect safety system to ensure complete protection for you and your devices. Includes a travel pouch and 18-month warranty."
+            },
+            10: {
+                name: "Logitech MX Master 3",
+                image: "https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=80",
+                currentPrice: "$99.99",
+                originalPrice: null,
+                description: "The Logitech MX Master 3 is an advanced wireless mouse designed for creatives and professionals. The MagSpeed electromagnetic scrolling is precise, quiet, and nearly instantaneous - scrolling through 1,000 lines in less than a second. The ergonomic shape supports your hand and wrist in a natural posture. The darkfield 4000 DPI sensor allows for precise tracking on any surface, even glass. Flow cross-computer control enables you to work across multiple computers and transfer files between them. The USB-C rechargeable battery provides up to 70 days of power on a full charge. Customize buttons and gestures with Logi Options+ software for Photoshop, Premiere Pro, and other applications."
             }
-          } catch(e){}
-        }
-      }
-    })();
+        };
 
-    // keyboard-friendly: enter/space on view buttons
-    document.querySelectorAll('.view-btn').forEach(btn=>{
-      btn.addEventListener('keyup', (e)=>{
-        if(e.key === 'Enter' || e.key === ' ') btn.click();
-      });
-    });
+        // Get DOM elements
+        const modal = document.getElementById('productModal');
+        const mapModal = document.getElementById('mapModal');
+        const modalProductName = document.getElementById('modalProductName');
+        const modalProductName2 = document.getElementById('modalProductName2');
+        const modalProductImage = document.getElementById('modalProductImage');
+        const modalCurrentPrice = document.getElementById('modalCurrentPrice');
+        const modalOriginalPrice = document.getElementById('modalOriginalPrice');
+        const modalProductDescription = document.getElementById('modalProductDescription');
+        const whatsappBtn = document.getElementById('whatsappBtn');
+        const visitShopBtn = document.getElementById('visitShopBtn');
+        const closeModal = document.querySelector('.close-modal');
+        const closeMapModal = document.getElementById('closeMapModal');
+        const productCards = document.querySelectorAll('.product-card');
+        const categoryButtons = document.querySelectorAll('.category-btn');
 
-    // Small enhancement: lazy-load larger images when modal opens
-    // Already handled by setting src on openProduct.
+        // Initialize map
+        let map = null;
+        
+        // Add click event to product cards
+        productCards.forEach(card => {
+            card.addEventListener('click', () => {
+                const productId = card.getAttribute('data-product-id');
+                const product = products[productId];
+                
+                // Update modal content
+                modalProductName.textContent = product.name;
+                modalProductName2.textContent = product.name;
+                modalProductImage.src = product.image;
+                modalCurrentPrice.textContent = product.currentPrice;
+                
+                if (product.originalPrice) {
+                    modalOriginalPrice.textContent = product.originalPrice;
+                    modalOriginalPrice.style.display = 'inline';
+                } else {
+                    modalOriginalPrice.style.display = 'none';
+                }
+                
+                modalProductDescription.textContent = product.description;
+                
+                // Set up WhatsApp button
+                const message = `Hello, I saw your product ${product.name} on your website and I want to buy it.`;
+                whatsappBtn.href = `https://wa.me/1234567890?text=${encodeURIComponent(message)}`;
+                
+                // Show modal
+                modal.style.display = 'flex';
+            });
+        });
 
-    // Keep a reference to the element that had focus before modal opened
-    let previousActive = null;
-  </script>
+        // Category filtering
+        categoryButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const category = button.getAttribute('data-category');
+                
+                // Update active button
+                categoryButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                
+                // Filter products
+                productCards.forEach(card => {
+                    if (category === 'all' || card.getAttribute('data-category') === category) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
 
+        // Close modal when clicking on X
+        closeModal.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+        
+        closeMapModal.addEventListener('click', () => {
+            mapModal.style.display = 'none';
+        });
+
+        // Close modal when clicking outside of modal content
+        window.addEventListener('click', (event) => {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+            if (event.target === mapModal) {
+                mapModal.style.display = 'none';
+            }
+        });
+
+        // Visit shop button click handler
+        visitShopBtn.addEventListener('click', () => {
+            modal.style.display = 'none';
+            mapModal.style.display = 'flex';
+            
+            // Initialize map if not already done
+            if (!map) {
+                // Small delay to allow modal to display before map initialization
+                setTimeout(() => {
+                    map = L.map('map').setView([51.505, -0.09], 15);
+                    
+                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                    }).addTo(map);
+                    
+                    L.marker([51.5, -0.09]).addTo(map)
+                        .bindPopup('TechBazaar Store<br>123 Tech Central, City')
+                        .openPopup();
+                }, 100);
+            }
+        });
+
+        // Add to cart functionality
+        let cartCount = 0;
+        const cartCountElement = document.querySelector('.cart-count');
+        
+        productCards.forEach(card => {
+            const addButton = document.createElement('button');
+            addButton.className = 'btn';
+            addButton.textContent = 'Add to Cart';
+            addButton.style.marginTop = '10px';
+            addButton.style.width = '100%';
+            
+            addButton.addEventListener('click', (e) => {
+                e.stopPropagation(); // Prevent opening the modal
+                cartCount++;
+                cartCountElement.textContent = cartCount;
+                
+                // Visual feedback
+                addButton.textContent = 'Added!';
+                addButton.style.background = '#10b981';
+                setTimeout(() => {
+                    addButton.textContent = 'Add to Cart';
+                    addButton.style.background = '';
+                }, 1500);
+            });
+            
+            card.querySelector('.product-info').appendChild(addButton);
+        });
+    </script>
 </body>
 </html>
