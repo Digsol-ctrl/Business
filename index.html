@@ -1,0 +1,579 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Your Shop in Every Pocket — Demo</title>
+  <style>
+    /* ====== Variables ====== */
+    :root{
+      --bg: #f7f9fc;
+      --card: #ffffff;
+      --text: #0f1724;
+      --muted: #6b7280;
+      --accent-blue: #0ea5e9;    /* bright blue */
+      --accent-orange: #ff7a18;  /* bright orange */
+      --success-green: #25D366;  /* whatsapp-like green */
+      --shadow: 0 6px 18px rgba(15,23,36,0.08);
+      --radius: 12px;
+      --glass: rgba(255,255,255,0.6);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+
+    /* ====== Basic page ====== */
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      background: linear-gradient(180deg, #f8fbff 0%, var(--bg) 100%);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.4;
+      padding:28px;
+    }
+
+    .container{
+      max-width:1200px;
+      margin:0 auto;
+      padding:8px 16px;
+    }
+
+    /* ====== Header / Hero ====== */
+    header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      margin-bottom:28px;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      text-decoration:none;
+      color:inherit;
+    }
+    .logo{
+      width:52px;
+      height:52px;
+      border-radius:12px;
+      background:linear-gradient(135deg,var(--accent-blue), var(--accent-orange));
+      box-shadow: var(--shadow);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:white;
+      font-weight:700;
+      font-size:18px;
+    }
+
+    .cta{
+      display:flex;
+      gap:8px;
+      align-items:center;
+    }
+    .btn{
+      border:0;
+      padding:10px 14px;
+      border-radius:10px;
+      cursor:pointer;
+      font-weight:600;
+      box-shadow: var(--shadow);
+    }
+    .btn-ghost{ background:transparent; color:var(--muted); }
+    .btn-primary{ background:linear-gradient(90deg,var(--accent-blue),var(--accent-orange)); color:white; }
+
+    .hero{
+      display:grid;
+      grid-template-columns: 1fr 420px;
+      gap:24px;
+      align-items:center;
+      margin-bottom:32px;
+    }
+
+    .hero-card{
+      background: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.4));
+      padding:28px;
+      border-radius:18px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(6px);
+    }
+
+    .hero h1{
+      margin:0;
+      font-size:28px;
+      letter-spacing:-0.5px;
+      color:var(--text);
+    }
+    .hero p{ margin:12px 0 18px 0; color:var(--muted); font-size:15px; }
+    .hero .features{ display:flex; gap:12px; flex-wrap:wrap; margin-top:8px; }
+    .pill{
+      background:linear-gradient(90deg, rgba(14,165,233,0.12), rgba(255,122,24,0.08));
+      color:var(--text);
+      border-radius:999px;
+      padding:8px 12px;
+      font-weight:600;
+      font-size:13px;
+    }
+
+    /* hero preview product */
+    .hero-preview{
+      background:linear-gradient(180deg,#fff,#fff);
+      border-radius:16px;
+      padding:18px;
+      box-shadow: var(--shadow);
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      align-items:center;
+      text-align:center;
+    }
+    .hero-preview img{
+      width:100%;
+      height:220px;
+      object-fit:cover;
+      border-radius:10px;
+      box-shadow: 0 8px 30px rgba(14,165,233,0.08);
+    }
+    .price-chip{
+      display:inline-block;
+      padding:8px 12px;
+      border-radius:999px;
+      font-weight:700;
+      background:linear-gradient(90deg,var(--accent-blue), var(--accent-orange));
+      color:white;
+    }
+
+    /* ====== Catalog ====== */
+    .catalog{
+      margin-top:8px;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap:18px;
+    }
+
+    .card{
+      background:var(--card);
+      border-radius:12px;
+      padding:12px;
+      box-shadow: var(--shadow);
+      transition:transform .18s ease, box-shadow .18s ease;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+    .card:hover{ transform:translateY(-6px); box-shadow: 0 18px 40px rgba(15,23,36,0.12); }
+
+    .card img{
+      width:100%;
+      height:160px;
+      object-fit:cover;
+      border-radius:10px;
+    }
+    .card h3{ margin:0; font-size:16px; }
+    .card p{ margin:0; color:var(--muted); font-size:14px; }
+    .card .meta{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-top:6px;
+    }
+    .price{
+      font-weight:800;
+      font-size:16px;
+      color:var(--text);
+    }
+    .view-btn{
+      background:transparent;
+      border:1px solid rgba(15,23,36,0.06);
+      padding:8px 10px;
+      border-radius:10px;
+      cursor:pointer;
+      font-weight:700;
+    }
+
+    /* ====== Modal ====== */
+    .modal-backdrop{
+      position:fixed;
+      inset:0;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index:1200;
+      background:linear-gradient(180deg, rgba(3,7,18,0.45), rgba(3,7,18,0.45));
+      padding:20px;
+    }
+    .modal{
+      width:100%;
+      max-width:920px;
+      background:var(--card);
+      border-radius:16px;
+      padding:18px;
+      display:grid;
+      grid-template-columns: 1fr 420px;
+      gap:18px;
+      box-shadow: 0 40px 80px rgba(3,7,18,0.3);
+      animation:pop .14s ease;
+    }
+    @keyframes pop{ from{transform:translateY(6px) scale(.995); opacity:0} to{transform:none; opacity:1} }
+
+    .modal .modal-image{
+      width:100%;
+      height:440px;
+      object-fit:cover;
+      border-radius:12px;
+      box-shadow: var(--shadow);
+    }
+    .modal .modal-content{
+      padding:6px 2px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+    .modal .modal-content h2{ margin:0; }
+    .modal .modal-content .desc{ color:var(--muted); font-size:15px; flex:1; }
+    .modal .modal-content .price-large{ font-size:26px; font-weight:900; margin-top:6px; }
+
+    .modal .actions{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      margin-top:10px;
+    }
+
+    .whatsapp-btn{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:12px 14px;
+      border-radius:12px;
+      font-weight:800;
+      color:white;
+      background:linear-gradient(90deg,var(--success-green), #16b84a);
+      border:0;
+      cursor:pointer;
+      box-shadow: 0 10px 30px rgba(37,211,102,0.18);
+      text-decoration:none;
+    }
+    .close-btn{
+      background:transparent;
+      border:0;
+      color:var(--muted);
+      font-weight:700;
+      cursor:pointer;
+      padding:8px 10px;
+      border-radius:10px;
+    }
+
+    /* ====== Footer ====== */
+    footer{
+      margin-top:30px;
+      text-align:center;
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    /* ====== Responsive ====== */
+    @media (max-width:1000px){
+      .hero{ grid-template-columns: 1fr; }
+      .modal{ grid-template-columns: 1fr; max-width:700px; }
+      .grid{ grid-template-columns: repeat(2,1fr); }
+    }
+    @media (max-width:560px){
+      body{ padding:18px; }
+      .grid{ grid-template-columns: repeat(1,1fr); }
+      .card img{ height:200px; }
+      .modal .modal-image{ height:320px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <a class="brand" href="#" aria-label="Varsity Shop">
+        <div class="logo">VB</div>
+        <div>
+          <div style="font-weight:800">Varsity Shop</div>
+          <div style="font-size:12px;color:var(--muted)">Demo e-commerce template</div>
+        </div>
+      </a>
+
+      <div class="cta">
+        <button class="btn btn-ghost" onclick="location.href='#catalog'">Browse</button>
+        <button class="btn btn-primary" onclick="alert('Replace with your own CTA — e.g., contact form')">Start Selling</button>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-card">
+          <h1>Your Shop in Every Pocket</h1>
+          <p>Discover all our products and services in one place. Built with clean visuals, fast interactions, and a mobile-first layout for sellers and buyers across Africa.</p>
+
+          <div class="features">
+            <span class="pill">Mobile-first</span>
+            <span class="pill">Fast checkout (demo)</span>
+            <span class="pill">WhatsApp ordering</span>
+            <span class="pill">Local-first</span>
+          </div>
+
+          <div style="margin-top:18px; display:flex; gap:10px;">
+            <button class="btn btn-primary" onclick="document.getElementById('catalog').scrollIntoView({behavior:'smooth'})">Shop Now</button>
+            <button class="btn btn-ghost" onclick="alert('Use this for onboarding sellers')">Sell with us</button>
+          </div>
+        </div>
+
+        <div class="hero-preview">
+          <img src="https://picsum.photos/seed/hero/800/600" alt="Featured product preview" />
+          <div style="display:flex;justify-content:space-between; width:100%; align-items:center;">
+            <div>
+              <div style="font-weight:800">Featured: Solar Power Bank</div>
+              <div style="font-size:13px;color:var(--muted)">Reliable, portable power — perfect for students</div>
+            </div>
+            <div class="price-chip">$29</div>
+          </div>
+        </div>
+      </section>
+
+      <section id="catalog" class="catalog" aria-labelledby="catalog-heading">
+        <h2 id="catalog-heading" style="margin:8px 0 18px 0">Product catalogue</h2>
+
+        <div class="grid" id="productGrid" role="list">
+          <!-- Cards inserted by HTML for demo -->
+          <div class="card" role="listitem" data-product='{"name":"Solar Power Bank","price":"$29","desc":"A compact solar power bank with 10,000mAh capacity — charges phones multiple times and has a built-in torch.","img":"https://picsum.photos/seed/p1/800/600"}'>
+            <img src="https://picsum.photos/seed/p1/600/400" alt="Solar Power Bank" />
+            <h3>Solar Power Bank</h3>
+            <p>Portable power for long study sessions and field trips.</p>
+            <div class="meta">
+              <div class="price">$29</div>
+              <button class="view-btn" onclick="openProductFromElement(this)">View</button>
+            </div>
+          </div>
+
+          <div class="card" role="listitem" data-product='{"name":"Campus Hoodie","price":"$22","desc":"Soft cotton hoodie with Varsity branding — stay warm and look sharp on campus.","img":"https://picsum.photos/seed/p2/800/600"}'>
+            <img src="https://picsum.photos/seed/p2/600/400" alt="Campus Hoodie" />
+            <h3>Campus Hoodie</h3>
+            <p>Comfortable hoodie for everyday wear.</p>
+            <div class="meta">
+              <div class="price">$22</div>
+              <button class="view-btn" onclick="openProductFromElement(this)">View</button>
+            </div>
+          </div>
+
+          <div class="card" role="listitem" data-product='{"name":"Noise-cancelling Earbuds","price":"$45","desc":"Small, in-ear earbuds with noise cancellation — ideal for studying in noisy environments.","img":"https://picsum.photos/seed/p3/800/600"}'>
+            <img src="https://picsum.photos/seed/p3/600/400" alt="Earbuds" />
+            <h3>Noise-cancelling Earbuds</h3>
+            <p>Focus better with high-quality sound and passive isolation.</p>
+            <div class="meta">
+              <div class="price">$45</div>
+              <button class="view-btn" onclick="openProductFromElement(this)">View</button>
+            </div>
+          </div>
+
+          <div class="card" role="listitem" data-product='{"name":"Refillable Notebook","price":"$7","desc":"Durable A5 notebook with refillable pages — perfect for notes and sketches.","img":"https://picsum.photos/seed/p4/800/600"}'>
+            <img src="https://picsum.photos/seed/p4/600/400" alt="Notebook" />
+            <h3>Refillable Notebook</h3>
+            <p>Sustainable, refillable design for continued use.</p>
+            <div class="meta">
+              <div class="price">$7</div>
+              <button class="view-btn" onclick="openProductFromElement(this)">View</button>
+            </div>
+          </div>
+
+          <div class="card" role="listitem" data-product='{"name":"Campus Backpack","price":"$38","desc":"Water-resistant backpack with laptop compartment and organizer pockets.","img":"https://picsum.photos/seed/p5/800/600"}'>
+            <img src="https://picsum.photos/seed/p5/600/400" alt="Backpack" />
+            <h3>Campus Backpack</h3>
+            <p>Carry books and laptop comfortably across campus.</p>
+            <div class="meta">
+              <div class="price">$38</div>
+              <button class="view-btn" onclick="openProductFromElement(this)">View</button>
+            </div>
+          </div>
+
+          <div class="card" role="listitem" data-product='{"name":"LED Desk Lamp","price":"$18","desc":"Adjustable brightness LED lamp — ideal for late-night study sessions.","img":"https://picsum.photos/seed/p6/800/600"}'>
+            <img src="https://picsum.photos/seed/p6/600/400" alt="Desk Lamp" />
+            <h3>LED Desk Lamp</h3>
+            <p>Bright, energy-efficient lamp with adjustable angles.</p>
+            <div class="meta">
+              <div class="price">$18</div>
+              <button class="view-btn" onclick="openProductFromElement(this)">View</button>
+            </div>
+          </div>
+
+          <div class="card" role="listitem" data-product='{"name":"Reusable Coffee Cup","price":"$9","desc":"Insulated reusable cup to keep your drinks hot or cold while you study.","img":"https://picsum.photos/seed/p7/800/600"}'>
+            <img src="https://picsum.photos/seed/p7/600/400" alt="Coffee Cup" />
+            <h3>Reusable Coffee Cup</h3>
+            <p>Eco-friendly cup for daily caffeine runs.</p>
+            <div class="meta">
+              <div class="price">$9</div>
+              <button class="view-btn" onclick="openProductFromElement(this)">View</button>
+            </div>
+          </div>
+
+          <div class="card" role="listitem" data-product='{"name":"USB Flash Drive 128GB","price":"$15","desc":"High-speed USB flash drive for backups and file transfers.","img":"https://picsum.photos/seed/p8/800/600"}'>
+            <img src="https://picsum.photos/seed/p8/600/400" alt="USB Flash Drive" />
+            <h3>USB Flash Drive 128GB</h3>
+            <p>Reliable storage for presentations and coursework.</p>
+            <div class="meta">
+              <div class="price">$15</div>
+              <button class="view-btn" onclick="openProductFromElement(this)">View</button>
+            </div>
+          </div>
+
+        </div>
+      </section>
+    </main>
+
+    <!-- Modal structure -->
+    <div id="modalBackdrop" class="modal-backdrop" aria-hidden="true" role="dialog" aria-modal="true">
+      <div class="modal" role="document" aria-labelledby="modalTitle">
+        <img id="modalImage" class="modal-image" src="" alt="" />
+        <div class="modal-content">
+          <div style="display:flex;justify-content:space-between;gap:10px;align-items:start;">
+            <div>
+              <h2 id="modalTitle">Product name</h2>
+              <div id="modalSubtitle" style="color:var(--muted);font-size:13px;margin-top:6px;"></div>
+            </div>
+            <button class="close-btn" id="modalClose" aria-label="Close product details">✕</button>
+          </div>
+
+          <div class="desc" id="modalDesc">
+            Full product description goes here.
+          </div>
+
+          <div class="price-large" id="modalPrice">$0</div>
+
+          <div class="actions">
+            <a href="#" id="whatsappLink" class="whatsapp-btn" target="_blank" rel="noopener noreferrer">
+              <!-- WhatsApp icon (simple svg) -->
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20.5 3.5C18 1 14.9 0 11.5 0 5.1 0 .1 5 .1 11.4c0 2 .5 3.9 1.5 5.6L0 24l6.3-1.6c1.6.9 3.3 1.4 5.2 1.4 6.4 0 11.6-5 11.6-11.6 0-3.4-1-6.5-3.1-8.8z" fill="white" opacity=".06"/>
+                <path d="M20 4.9c-.8-.8-1.7-1.5-2.7-2 .9 1.1 1.5 2.5 1.5 4 0 3.4-2.7 6.1-6.1 6.1-.7 0-1.4-.1-2-.4L8 16l1.6-2.7c-.3-.7-.5-1.4-.5-2.2 0-3.4 2.7-6.1 6.1-6.1 1.4 0 2.8.5 3.9 1.4.8.8 1.4 1.6 1.9 2.6z" fill="white"/>
+              </svg>
+              Order on WhatsApp
+            </a>
+
+            <button class="close-btn" id="modalClose2">Close</button>
+          </div>
+
+          <div style="color:var(--muted); font-size:13px; margin-top:auto;">
+            Tip: WhatsApp opens in a new tab. Replace this flow with a checkout when you add a backend.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      © <span id="year"></span> Varsity Shop — Demo. Built for student sellers & entrepreneurs.
+    </footer>
+  </div>
+
+  <script>
+    // ====== Utilities ======
+    const modalBackdrop = document.getElementById('modalBackdrop');
+    const modalImage = document.getElementById('modalImage');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalDesc = document.getElementById('modalDesc');
+    const modalPrice = document.getElementById('modalPrice');
+    const whatsappLink = document.getElementById('whatsappLink');
+    const modalClose = document.getElementById('modalClose');
+    const modalClose2 = document.getElementById('modalClose2');
+    const modalSubtitle = document.getElementById('modalSubtitle');
+
+    // Fill year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Open the modal using the product data attached to the card
+    function openProductFromElement(button){
+      // find closest card element and its data-product
+      const card = button.closest('.card');
+      if(!card) return;
+      const json = card.getAttribute('data-product');
+      let product = {};
+      try { product = JSON.parse(json); } catch(e){ console.warn('Invalid product JSON', e); return; }
+      openProduct(product);
+    }
+
+    // Core open function
+    function openProduct(product){
+      modalImage.src = product.img || 'https://picsum.photos/seed/default/800/600';
+      modalImage.alt = product.name || 'Product';
+      modalTitle.textContent = product.name || 'Product name';
+      modalDesc.textContent = product.desc || '';
+      modalPrice.textContent = product.price || '';
+      modalSubtitle.textContent = product.desc?.slice(0,80) || '';
+      // Build WhatsApp URL: use wa.me/?text=... which works without a phone number (opens WhatsApp Web)
+      const message = `Hello, I saw your product "${product.name}" on your website and I want to buy it.`;
+      const waHref = 'https://wa.me/?text=' + encodeURIComponent(message);
+      whatsappLink.href = waHref;
+
+      // Show modal
+      modalBackdrop.style.display = 'flex';
+      modalBackdrop.setAttribute('aria-hidden', 'false');
+
+      // Accessibility: trap focus (basic)
+      previousActive = document.activeElement;
+      setTimeout(()=> whatsappLink.focus(), 80);
+    }
+
+    // Close modal
+    function closeModal(){
+      modalBackdrop.style.display = 'none';
+      modalBackdrop.setAttribute('aria-hidden', 'true');
+      // restore focus
+      if(previousActive) previousActive.focus();
+    }
+
+    // Close handlers
+    modalClose.addEventListener('click', closeModal);
+    modalClose2.addEventListener('click', closeModal);
+    modalBackdrop.addEventListener('click', (e)=>{
+      if(e.target === modalBackdrop) closeModal(); // click outside to close
+    });
+
+    // Keyboard support
+    window.addEventListener('keydown', (e)=>{
+      if(e.key === 'Escape' && modalBackdrop.style.display === 'flex') closeModal();
+    });
+
+    // Optional: open modal from URL hash (#product=Solar%20Power%20Bank)
+    (function handleHashOpen(){
+      const params = new URLSearchParams(location.hash.replace('#',''));
+      // expected format: #product=Product%20Name
+      if(location.hash && location.hash.startsWith('#product=')){
+        const requested = decodeURIComponent(location.hash.split('=')[1] || '');
+        // find product in DOM
+        const cards = document.querySelectorAll('.card');
+        for(const c of cards){
+          try {
+            const p = JSON.parse(c.dataset.product);
+            if(p.name && p.name.toLowerCase() === requested.toLowerCase()){
+              openProduct(p);
+              break;
+            }
+          } catch(e){}
+        }
+      }
+    })();
+
+    // keyboard-friendly: enter/space on view buttons
+    document.querySelectorAll('.view-btn').forEach(btn=>{
+      btn.addEventListener('keyup', (e)=>{
+        if(e.key === 'Enter' || e.key === ' ') btn.click();
+      });
+    });
+
+    // Small enhancement: lazy-load larger images when modal opens
+    // Already handled by setting src on openProduct.
+
+    // Keep a reference to the element that had focus before modal opened
+    let previousActive = null;
+  </script>
+
+</body>
+</html>
